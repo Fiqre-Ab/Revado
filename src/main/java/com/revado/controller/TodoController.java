@@ -36,8 +36,8 @@ public class TodoController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        todo.setId(null);
-        todo.setUser(user);
+        todo.setId(null);      // make sure INSERT (optional)
+        todo.setUser(user);    // connect todo -> user
         return todoRepository.save(todo);
     }
 
