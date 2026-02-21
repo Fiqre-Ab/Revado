@@ -1,5 +1,6 @@
 package com.revado.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,9 +16,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Todo {
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
     private String title;
     private String description;
+    @Column(nullable = false)
+    private boolean completed = false;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
