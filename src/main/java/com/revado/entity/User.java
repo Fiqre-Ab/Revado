@@ -14,11 +14,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class User {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    private UUID id;
+    private Long id;
     @Column(nullable = false)
-    private String FullName;
+    private String fullName;
     @Column(nullable = false, unique=true)
     private String email;
     @Column(nullable = false)
