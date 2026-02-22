@@ -1,4 +1,4 @@
 package com.revado.dto;
 
-public record LogiReq(String fullName, String email, String password) {
+public record LoginReq(String fullName, String email, String password) {
 }

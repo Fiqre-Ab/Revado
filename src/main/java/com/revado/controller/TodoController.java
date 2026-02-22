@@ -1,6 +1,4 @@
 package com.revado.controller;
-
-
 import com.revado.entity.Todo;
 import com.revado.entity.User;
 import com.revado.repository.TodoRepository;
@@ -16,14 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/{userId}/todos")
 public class TodoController {
-
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
-
     public TodoController(TodoRepository todoRepository, UserRepository userRepository) {
         this.todoRepository = todoRepository;
         this.userRepository = userRepository;
-
     }
 
     public String Email() {
@@ -37,7 +32,7 @@ public class TodoController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         todo.setId(null);
-        todo.setUser(user);    // associate with owner
+        todo.setUser(user);
         return todoRepository.save(todo);
     }
 
@@ -67,7 +62,7 @@ public class TodoController {
         return todoRepository.save(todo);
     }
 
-    @DeleteMapping("/{todoid}")
+    @DeleteMapping("/{todoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTodo(@PathVariable Long userId, @PathVariable Long todoId){
         Todo todo = todoRepository.findByIdAndUserId(todoId,userId)

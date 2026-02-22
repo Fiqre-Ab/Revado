@@ -1,6 +1,4 @@
 package com.revado.controller;
-
-
 import com.revado.entity.User;
 import com.revado.repository.UserRepository;
 import org.springframework.http.HttpStatus;
