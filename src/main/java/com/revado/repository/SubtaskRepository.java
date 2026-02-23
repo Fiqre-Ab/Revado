@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface SubtaskRepository extends JpaRepository<Subtask,Long> {
     List<Subtask> findByTodoId(Long todoId);
     Optional<Subtask> findByIdAndTodoId(Long id, Long todoId);
+    Optional<Subtask> findByIdAndTodoIdAndTodoUserId(Long id, Long todoId, Long userId);
 }

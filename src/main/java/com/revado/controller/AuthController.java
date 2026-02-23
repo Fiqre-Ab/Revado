@@ -23,7 +23,10 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> attemptLogin(@RequestBody User credentials) {
         return ResponseEntity.status(HttpStatus.OK).body(service.validateCredentials(credentials));
     }
-
+//    @PostMapping("/register")
+//    public ResponseEntity<User> register(@RequestBody User user) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.register(user));
+//    }
     @ExceptionHandler(LoginFail.class)
     public ResponseEntity<Map<String, String>> handleLoginFail(LoginFail exception) {
         Map<String, String> responseMap = new HashMap<>();

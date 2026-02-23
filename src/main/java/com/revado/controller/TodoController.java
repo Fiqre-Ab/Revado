@@ -1,73 +1,47 @@
 package com.revado.controller;
+
 import com.revado.entity.Todo;
-import com.revado.entity.User;
-import com.revado.repository.TodoRepository;
-import com.revado.repository.UserRepository;
-//import org.springframework.boot.actuate.endpoint.SecurityContext;
+import com.revado.service.TodoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users/{userId}/todos")
+@RequiredArgsConstructor
 public class TodoController {
-    private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
-    public TodoController(TodoRepository todoRepository, UserRepository userRepository) {
-        this.todoRepository = todoRepository;
-        this.userRepository = userRepository;
-    }
 
-    public String Email() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
+    private final TodoService todoService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Todo createTodo(@PathVariable Long userId, @RequestBody Todo todo) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-
-        todo.setId(null);
-        todo.setUser(user);
-        return todoRepository.save(todo);
+    public Todo create(@PathVariable Long userId, @RequestBody Todo todo) {
+        return todoService.create(userId, todo);
     }
 
     @GetMapping
-    public List<Todo> myTodos(@PathVariable Long userId) {
-
-        return todoRepository.findByUserId(userId);
+    public List<Todo> getAll(@PathVariable Long userId) {
+        return todoService.getByUser(userId);
+    }
+    @GetMapping("/{todoId}")
+    public Todo getById(@PathVariable Long userId, @PathVariable Long todoId) {
+        return todoService.getById(userId, todoId);
     }
     @PutMapping("/{todoId}")
-    public Todo updateTodo(@PathVariable Long userId,@PathVariable Long todoId,
-                           @RequestBody Todo coming){
-
-        Todo todo = todoRepository.findByIdAndUserId(todoId,userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found"));
-                 todo.setTitle(coming.getTitle());
-                 todo.setDescription(coming.getDescription());
-                 todo.setCompleted(coming.isCompleted());
-             return todoRepository.save(todo);
+    public Todo update(@PathVariable Long userId, @PathVariable Long todoId, @RequestBody Todo incoming) {
+        return todoService.update(userId, todoId, incoming);
     }
+
     @PatchMapping("/{todoId}/complete")
-    public Todo toggleComplete(@PathVariable Long userId, @PathVariable Long todoId) {
-
-        Todo todo = todoRepository.findByIdAndUserId(todoId, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found"));
-
-        todo.setCompleted(!todo.isCompleted());
-        return todoRepository.save(todo);
+    public Todo toggle(@PathVariable Long userId, @PathVariable Long todoId) {
+        return todoService.toggleComplete(userId, todoId);
     }
 
     @DeleteMapping("/{todoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTodo(@PathVariable Long userId, @PathVariable Long todoId){
-        Todo todo = todoRepository.findByIdAndUserId(todoId,userId)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Todo Not found"));
-        todoRepository.delete(todo);
+    public void delete(@PathVariable Long userId, @PathVariable Long todoId) {
+        todoService.delete(userId, todoId);
     }
-
 }

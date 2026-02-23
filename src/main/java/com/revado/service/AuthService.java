@@ -26,9 +26,9 @@ public class AuthService {
         }
 
         User user = userRepo.findByEmail(credentials.getEmail())
-                .orElseThrow(() -> new LoginFail("Invalid email or password"));
+                .orElseThrow(() -> new LoginFail("Invalid email/ passwords"));
 
-        if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword())) {
+        if (!credentials.getPassword().equals(user.getPassword())) {
             throw new LoginFail("Invalid email or password");
         }
 
@@ -45,7 +45,7 @@ public class AuthService {
         }
 
         if (!authorizationHeader.startsWith("Bearer ")) {
-            throw new AuthFail("Authorization must start with 'Bearer '");
+            throw new AuthFail("Authorization start");
         }
 
         String token = authorizationHeader.substring(7).trim();

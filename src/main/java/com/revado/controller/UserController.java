@@ -1,52 +1,39 @@
 package com.revado.controller;
+
 import com.revado.entity.User;
-import com.revado.repository.UserRepository;
+import com.revado.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
-    public UserController(UserRepository userRepository){
-        this.userRepository=userRepository;
+    private final UserService userService;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody User user) {
+        return userService.create(user);
     }
 
-    /*Create user */
-@PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User CreateUser(@RequestBody User user ){
-        if(userRepository.existsByEmail(user.getEmail())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email is already Exists");
-        }
-        return userRepository.save(user);
+    @GetMapping
+    public List<User> getAll() {
+        return userService.getAll();
+    }
 
-}
+    @GetMapping("/{id}")
+    public User getOne(@PathVariable Long id) {
+        return userService.getById(id);
+    }
 
-/*Get all users*/
-@GetMapping
-public List<User> getAllUsers(){
-    return userRepository.findAll();
-}
-
-/*Get user by id*/
-@GetMapping("/{id}")
-    public User getUser(@PathVariable Long id){
-        return userRepository.findById(id).
-                orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found"));
-}
-
-/*Delete user by id*/
-@DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
-        if(!userRepository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found");
-        }
-        userRepository.deleteById(id);
-  }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
+    }
 }
