@@ -1,1 +1,37 @@
-<p>login works!</p>
+<div class="flex justify-content-center align-items-center min-h-screen">
+    <p-card [style]="{ width: '400px' }">
+        <h2 class="login-title">Login</h2>
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+            <div class="field">
+                <label for="email">Email</label>
+
+                <input id="email" name="email" #emailControl="ngModel" required [pattern]="emailPattern" pInputText
+                    [(ngModel)]="email" class="w-full" />
+
+                @if (emailControl.invalid && (emailControl.dirty || emailControl.touched)) {
+                @if (emailControl.errors?.['required']) {
+                <small class="block p-error">Email is required</small>
+                } @else if (emailControl.errors?.['pattern']) {
+                <small class="block p-error">Please enter a valid email</small>
+                }
+                }
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+
+                <p-password [(ngModel)]="password" [feedback]="false" [toggleMask]="true" inputId="password"
+                    autocomplete="off" name="password" #passwordCtrl="ngModel" styleClass="w-full"
+                    required></p-password>
+
+                @if (passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)) {
+                @if (passwordCtrl.errors?.['required']) {
+                <small class="block p-error">Password is required</small>
+                }
+                }
+            </div>
+
+            <button pButton type="submit" label="Login" class="w-full" [disabled]="loginForm.invalid"></button>
+        </form>
+    </p-card>
+</div>
