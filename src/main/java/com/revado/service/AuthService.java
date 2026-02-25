@@ -28,7 +28,7 @@ public class AuthService {
         User user = userRepo.findByEmail(credentials.getEmail())
                 .orElseThrow(() -> new LoginFail("Invalid email/ passwords"));
 
-        if (!credentials.getPassword().equals(user.getPassword())) {
+        if (!passwordEncoder.matches(credentials.getPassword(), user.getPassword())) {
             throw new LoginFail("Invalid email or password");
         }
 
@@ -38,14 +38,25 @@ public class AuthService {
         response.put("token", token);
         return response;
     }
-
+    public User register(User incoming) {
+        if (incoming == null || incoming.getEmail() == null || incoming.getPassword() == null || incoming.getFullName() == null) {
+            throw new LoginFail("Full name, email, and password are required");
+        }
+        if (userRepo.existsByEmail(incoming.getEmail())) {
+            throw new LoginFail("Email already exists");
+        }
+        incoming.setId(null);
+        incoming.setPassword(passwordEncoder.encode(incoming.getPassword()));
+        incoming.setTodos(null);
+        return userRepo.save(incoming);
+    }
     public boolean validateToken(String authorizationHeader) {
         if (authorizationHeader == null || authorizationHeader.isBlank()) {
             throw new AuthFail("Missing Authorization header");
         }
 
         if (!authorizationHeader.startsWith("Bearer ")) {
-            throw new AuthFail("Authorization start");
+            throw new AuthFail("Authorization must start with 'Bearer '");
         }
 
         String token = authorizationHeader.substring(7).trim();
