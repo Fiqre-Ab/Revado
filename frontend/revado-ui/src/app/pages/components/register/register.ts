@@ -12,7 +12,8 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password')?.value;
@@ -29,6 +30,7 @@ function passwordMatchValidator(group: AbstractControl): ValidationErrors | null
   styleUrls: ['./register.css'],
 })
 export class Register {
+  constructor(private authService: AuthService, private router: Router) {}
   registerForm = new FormGroup(
     {
       fullName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -47,7 +49,13 @@ export class Register {
   onSubmit() {
     this.registerForm.markAllAsTouched(); 
     if (this.registerForm.invalid) return;
-
-    console.log('Form Submitted', this.registerForm.value);
-  }
-}
+    const { fullName, email, password } = this.registerForm.getRawValue();
+this.authService.registerUser(fullName, email, password).subscribe({
+    next: () => {
+    this.router.navigate(['/login']);
+    },
+    error: (err) => {
+      console.error("Registration failed", err);
+    }
+});
+  }}

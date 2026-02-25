@@ -18,7 +18,6 @@ export class AuthService {
       password
     });
   }
-
   login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.baseUrl}/login`, {
       email,
@@ -29,17 +28,13 @@ export class AuthService {
       })
     );
   }
-
   logout(): void {
     localStorage.removeItem('token');
   }
 
-
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
-
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
