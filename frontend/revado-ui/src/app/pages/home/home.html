@@ -1,4 +1,37 @@
+<div class="container p-4">
+    <h1 class="text-center text-2xl font-bold mb-4">Welcome to {{ greeting }}!</h1>
+    <div class="flex justify-content-between align-items-center mb-4">
+        <h2>My Tasks</h2>
+        <button pButton type="button" label="Logout" (click)="logout()"></button>
+    </div>
+    <div class="card p-3 mb-4">
+        <h2>Add New Task</h2>
 
-<h1>Revado Frontend</h1>
-<p>Angular</p>
-<p>{{ greeting }}</p>
+        <input type="text" pInputText [(ngModel)]="newTodoTitle" placeholder="Enter task title" class="w-full mb-2" />
+
+        <button pButton type="button" label="Add Task" icon="pi pi-plus" (click)="addTodo()" [disabled]="!newTodoTitle">
+        </button>
+    </div>
+    <div *ngIf="todos.length > 0; else emptyState">
+
+        <div *ngFor="let todo of todos" class="card p-3 mb-2 flex justify-content-between align-items-center">
+
+            <div class="flex align-items-center gap-2">
+                <p-checkbox [binary]="true" [(ngModel)]="todo.completed" (onChange)="toggleTodo(todo.id)">
+                </p-checkbox>
+
+                <span [class.line-through]="todo.completed">
+                    {{ todo.title }}
+                </span>
+            </div>
+            <button pButton icon="pi pi-trash" severity="danger" text="true" (click)="deleteTodo(todo.id)">
+            </button>
+        </div>
+    </div>
+    <ng-template #emptyState>
+        <div class="text-center mt-4">
+        <p>No tasks yet. Create your first task above.</p>
+        </div>
+    </ng-template>
+
+</div>
