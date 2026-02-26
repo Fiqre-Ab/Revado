@@ -1,37 +1,69 @@
 <div class="container p-4">
-    <h1 class="text-center text-2xl font-bold mb-4">Welcome to {{ greeting }}!</h1>
-    <div class="flex justify-content-between align-items-center mb-4">
-        <h2>My Tasks</h2>
-        <button pButton type="button" label="Logout" (click)="logout()"></button>
+    <div class="flex justify-content-between align-items-center mb-5 border-bottom-1 border-gray-200 pb-3">
+        <h1 class="text-3xl font-bold text-primary m-0">{{ greeting }}</h1>
+        <button pButton type="button" label="Logout" icon="pi pi-sign-out" class="p-button-danger p-button-text"
+            (click)="logout()"></button>
     </div>
-    <div class="card p-3 mb-4">
-        <h2>Add New Task</h2>
-
-        <input type="text" pInputText [(ngModel)]="newTodoTitle" placeholder="Enter task title" class="w-full mb-2" />
-
-        <button pButton type="button" label="Add Task" icon="pi pi-plus" (click)="addTodo()" [disabled]="!newTodoTitle">
-        </button>
-    </div>
-    <div *ngIf="todos.length > 0; else emptyState">
-
-        <div *ngFor="let todo of todos" class="card p-3 mb-2 flex justify-content-between align-items-center">
-
-            <div class="flex align-items-center gap-2">
-                <p-checkbox [binary]="true" [(ngModel)]="todo.completed" (onChange)="toggleTodo(todo.id)">
-                </p-checkbox>
-
-                <span [class.line-through]="todo.completed">
-                    {{ todo.title }}
+    <form (ngSubmit)="addTodo()" #todoForm="ngForm">
+        <div class="card p-4 mb-5 shadow-2 border-round">
+            <h3 class="mt-0 mb-3">Create New Task</h3>
+            <div class="flex flex-column gap-3">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-tag"></i>
+                    <input type="text" pInputText [(ngModel)]="newTodoTitle" name="newTodoTitle" required
+                        placeholder="What needs to be done?" class="w-full" />
                 </span>
+
+                <textarea pInputTextarea [(ngModel)]="newTodoDescription" name="newTodoDescription"
+                    placeholder="Add a description (optional)..." class="w-full" rows="2"></textarea>
+
+                <button pButton type="submit" label="Add Task" icon="pi pi-plus" [disabled]="todoForm.invalid"
+                    class="w-full lg:w-max"></button>
             </div>
-            <button pButton icon="pi pi-trash" severity="danger" text="true" (click)="deleteTodo(todo.id)">
-            </button>
+        </div>
+    </form>
+    <div *ngIf="todos.length > 0; else emptyState">
+        <div *ngFor="let todo of todos" class="card p-3 mb-3 border-round shadow-1 bg-white">
+            <div class="flex justify-content-between align-items-start mb-3">
+                <div class="flex align-items-start gap-3">
+                    <p-checkbox [binary]="true" [(ngModel)]="todo.completed"
+                        (onChange)="toggleTodo(todo.id)"></p-checkbox>
+
+                    <div class="flex flex-column">
+                        <span [class.line-through]="todo.completed" class="text-xl font-bold text-900">
+                            {{ todo.title }}
+                        </span>
+                        <p class="text-600 m-0 mt-1 text-sm">{{ todo.description }}</p>
+                    </div>
+                </div>
+
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                    (click)="deleteTodo(todo.id)"></button>
+            </div>
+
+            <div class="subtask-container ml-5 border-left-2 border-gray-100 pl-3">
+                <h4 class="text-xs font-semibold text-500 uppercase tracking-wider mb-2">Subtasks</h4>
+
+                <div *ngFor="let st of todo.subtasks" class="flex justify-content-between align-items-center mb-2">
+                    <div class="flex align-items-center gap-2">
+                        <p-checkbox [binary]="true" [(ngModel)]="st.completed"
+                            (onChange)="toggleSubtask(todo.id, st.id)"></p-checkbox>
+                        <span [class.line-through]="st.completed" class="text-sm">{{ st.title }}</span>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input type="text" #subInput pInputText placeholder="New subtask..."
+                        class="p-inputtext-sm flex-1" />
+                    <button pButton type="button" icon="pi pi-plus" class="p-button-sm p-button-text"
+                        (click)="addSubtask(todo.id, subInput.value); subInput.value=''">Add Subtask</button>
+                </div>
+            </div>
         </div>
     </div>
     <ng-template #emptyState>
-        <div class="text-center mt-4">
-        <p>No tasks yet. Create your first task above.</p>
+        <div class="text-center mt-8 py-8 border-2 border-dashed border-gray-300 border-round">
+            <i class="pi pi-clipboard text-6xl text-300 mb-3y"></i>
+            <p class="text-xl text-500">No tasks. Create your first task!</p>
         </div>
     </ng-template>
-
 </div>
