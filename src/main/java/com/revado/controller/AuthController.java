@@ -11,17 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@RequiredArgsConstructor
 @RestController
 public class AuthController {
 
     private final AuthService service;
-
-    public AuthController(AuthService service) {
-        this.service = service;
-    }
-
-
     // login
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> attemptLogin(@RequestBody User credentials) {

@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+# database file
+*.db
+revado.db
+# Ignoreproperties
+application-local.properti
