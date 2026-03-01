@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export class TodoService {
   private url = 'http://localhost:8080/users';
   constructor(private http: HttpClient) {}
+  /*Todo*/
   getTodos(uid: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${uid}/todos`);
   }
@@ -25,4 +26,7 @@ export class TodoService {
   toggleSubtask(uid: number, tid: number, sid: number) {
     return this.http.patch(`${this.url}/${uid}/todos/${tid}/subtasks/${sid}/complete`, {});
   }
+  deleteSubtask(uid: number, todoId: number, subtaskId: number): Observable<any> {
+    return this.http.delete(`${this.url}/${uid}/todos/${todoId}/subtasks/${subtaskId}`);
+}
 }

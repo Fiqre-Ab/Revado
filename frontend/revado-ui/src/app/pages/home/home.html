@@ -4,8 +4,9 @@
         <button pButton type="button" label="Logout" icon="pi pi-sign-out" class="p-button-danger p-button-text"
             (click)="logout()"></button>
     </div>
+
     <form (ngSubmit)="addTodo()" #todoForm="ngForm">
-        <div class="card p-4 mb-5 shadow-2 border-round">
+        <div class="card p-4 mb-5 shadow-2 border-round bg-white">
             <h3 class="mt-0 mb-3">Create New Task</h3>
             <div class="flex flex-column gap-3">
                 <span class="p-input-icon-left">
@@ -22,8 +23,10 @@
             </div>
         </div>
     </form>
+
     <div *ngIf="todos.length > 0; else emptyState">
         <div *ngFor="let todo of todos" class="card p-3 mb-3 border-round shadow-1 bg-white">
+
             <div class="flex justify-content-between align-items-start mb-3">
                 <div class="flex align-items-start gap-3">
                     <p-checkbox [binary]="true" [(ngModel)]="todo.completed"
@@ -38,7 +41,7 @@
                 </div>
 
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                    (click)="deleteTodo(todo.id)"></button>
+                    (click)="deleteTodo(todo.id)" pTooltip="Delete Task"></button>
             </div>
 
             <div class="subtask-container ml-5 border-left-2 border-gray-100 pl-3">
@@ -50,20 +53,27 @@
                             (onChange)="toggleSubtask(todo.id, st.id)"></p-checkbox>
                         <span [class.line-through]="st.completed" class="text-sm">{{ st.title }}</span>
                     </div>
+
+                    <button pButton icon="pi pi-times"
+                        class="p-button-rounded p-button-text p-button-danger p-button-sm"
+                        (click)="deleteSubtask(todo.id, st.id)" pTooltip="Delete Subtask"></button>
                 </div>
-                <div class="flex gap-2 mt-2">
-                    <input type="text" #subInput pInputText placeholder="New subtask..."
-                        class="p-inputtext-sm flex-1" />
-                    <button pButton type="button" icon="pi pi-plus" class="p-button-sm p-button-text"
-                        (click)="addSubtask(todo.id, subInput.value); subInput.value=''">Add Subtask</button>
+
+                <div class="flex gap-2 mt-3">
+                    <input type="text" #subInput pInputText placeholder="New subtask..." class="p-inputtext-sm flex-1"
+                        (keyup.enter)="addSubtask(todo.id, subInput.value); subInput.value='' " />
+                    <button pButton type="button" icon="pi pi-plus" label="Add Subtask"
+                        class="p-button-sm p-button-text"
+                        (click)="addSubtask(todo.id, subInput.value); subInput.value='' "></button>
                 </div>
             </div>
         </div>
     </div>
+
     <ng-template #emptyState>
         <div class="text-center mt-8 py-8 border-2 border-dashed border-gray-300 border-round">
-            <i class="pi pi-clipboard text-6xl text-300 mb-3y"></i>
-            <p class="text-xl text-500">No tasks. Create your first task!</p>
+            <i class="pi pi-clipboard text-6xl text-300 mb-3"></i>
+            <p class="text-xl text-500">No tasks. Create your first task above!</p>
         </div>
     </ng-template>
 </div>

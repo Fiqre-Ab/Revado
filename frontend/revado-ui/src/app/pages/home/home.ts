@@ -8,7 +8,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule],
+  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule,ButtonModule, CheckboxModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
@@ -88,4 +88,12 @@ export class Home implements OnInit {
     localStorage.removeItem('token');
     window.location.href = '/';
   }
+deleteSubtask(todoId: number, subtaskId: number) {
+  if (confirm("delete this subtask?")) {
+    this.todoService.deleteSubtask(this.userId, todoId, subtaskId).subscribe({
+      next: () => this.loadTodos(),
+      error: (err) => console.error("not delete subtask", err)
+    });
+  }
+}
 }
