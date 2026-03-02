@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../services/todo-service';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule,ButtonModule, CheckboxModule],
+  imports: [CommonModule, FormsModule, ButtonModule, CheckboxModule, ButtonModule, CheckboxModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
@@ -21,8 +21,8 @@ export class Home implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private cdr: ChangeDetectorRef 
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.userId = this.getUserIdFromToken();
@@ -36,18 +36,24 @@ export class Home implements OnInit {
     try {
       const payloadPart = token.split('.')[1];
       const payload = JSON.parse(atob(payloadPart));
-      return Number(payload.sub) || 0; 
+      return Number(payload.sub) || 0;
     } catch {
       return 0;
     }
+  }
+  logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/';
   }
 
   loadTodos() {
     this.todoService.getTodos(this.userId).subscribe(data => {
       this.todos = data;
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     });
   }
+
+  /*Todo*/
 
   addTodo() {
     if (!this.newTodoTitle.trim()) return;
@@ -72,28 +78,32 @@ export class Home implements OnInit {
   deleteTodo(todoId: number) {
     this.todoService.deleteTodo(this.userId, todoId).subscribe(() => this.loadTodos());
   }
+  saveTodo(todo: any) {
+    todo.editing = false;
+    this.todoService.updateTodo(this.userId, todo.id, todo).subscribe();
+  }
 
+  // For the Subtask
   addSubtask(todoId: number, title: string) {
     if (!title.trim()) return;
     this.todoService
       .createSubtask(this.userId, todoId, { title, completed: false })
       .subscribe(() => this.loadTodos());
   }
-
   toggleSubtask(todoId: number, subtaskId: number) {
     this.todoService.toggleSubtask(this.userId, todoId, subtaskId).subscribe(() => this.loadTodos());
   }
+  saveSubtask(todoId: number, st: any) {
+    st.editing = false;
+    this.todoService.updateSubtask(this.userId, todoId, st.id, st).subscribe();
+  }
+  deleteSubtask(todoId: number, subtaskId: number) {
+    if (confirm("delete this subtask?")) {
+      this.todoService.deleteSubtask(this.userId, todoId, subtaskId).subscribe({
+        next: () => this.loadTodos(),
+        error: (err) => console.error("not delete subtask", err)
+      });
+    }
 
-  logout() {
-    localStorage.removeItem('token');
-    window.location.href = '/';
   }
-deleteSubtask(todoId: number, subtaskId: number) {
-  if (confirm("delete this subtask?")) {
-    this.todoService.deleteSubtask(this.userId, todoId, subtaskId).subscribe({
-      next: () => this.loadTodos(),
-      error: (err) => console.error("not delete subtask", err)
-    });
-  }
-}
 }

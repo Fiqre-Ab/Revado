@@ -1,5 +1,4 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { stepHeader } from '@primeuix/themes/aura/stepper';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
  const  token = localStorage.getItem('token');

@@ -16,6 +16,9 @@ export class TodoService {
   toggleTodo(uid: number, tid: number) {
     return this.http.patch(`${this.url}/${uid}/todos/${tid}/complete`, {});
   }
+  updateTodo(uid: number, tid: number, todo: any) {
+    return this.http.put(`${this.url}/${uid}/todos/${tid}`, todo);
+  }
   deleteTodo(uid: number, tid: number) {
     return this.http.delete(`${this.url}/${uid}/todos/${tid}`);
   }
@@ -26,7 +29,11 @@ export class TodoService {
   toggleSubtask(uid: number, tid: number, sid: number) {
     return this.http.patch(`${this.url}/${uid}/todos/${tid}/subtasks/${sid}/complete`, {});
   }
-  deleteSubtask(uid: number, todoId: number, subtaskId: number): Observable<any> {
-    return this.http.delete(`${this.url}/${uid}/todos/${todoId}/subtasks/${subtaskId}`);
+  deleteSubtask(uid: number, tid: number, sid: number): Observable<any> {
+    return this.http.delete(`${this.url}/${uid}/todos/${tid}/subtasks/${sid}`);
 }
+  updateSubtask(uid: number, tid: number, sid: number, sub: any) {
+    return this.http.put(`${this.url}/${uid}/todos/${tid}/subtasks/${sid}`, sub);
+  }
+
 }

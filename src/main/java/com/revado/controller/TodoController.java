@@ -20,7 +20,6 @@ public class TodoController {
     public Todo create(@PathVariable Long userId, @RequestBody Todo todo) {
         return todoService.create(userId, todo);
     }
-
     @GetMapping
     public List<Todo> getAll(@PathVariable Long userId) {
         return todoService.getByUser(userId);

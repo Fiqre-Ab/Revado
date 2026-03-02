@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "subtasks")
+@Table(name = "subtask")
 public class Subtask {
 
     @Id

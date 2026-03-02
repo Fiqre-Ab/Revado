@@ -14,51 +14,55 @@
                     <input type="text" pInputText [(ngModel)]="newTodoTitle" name="newTodoTitle" required
                         placeholder="What needs to be done?" class="w-full" />
                 </span>
-
                 <textarea pInputTextarea [(ngModel)]="newTodoDescription" name="newTodoDescription"
                     placeholder="Add a description (optional)..." class="w-full" rows="2"></textarea>
-
                 <button pButton type="submit" label="Add Task" icon="pi pi-plus" [disabled]="todoForm.invalid"
                     class="w-full lg:w-max"></button>
             </div>
         </div>
     </form>
-
     <div *ngIf="todos.length > 0; else emptyState">
         <div *ngFor="let todo of todos" class="card p-3 mb-3 border-round shadow-1 bg-white">
 
             <div class="flex justify-content-between align-items-start mb-3">
-                <div class="flex align-items-start gap-3">
+                <div class="flex align-items-start gap-3 w-full">
                     <p-checkbox [binary]="true" [(ngModel)]="todo.completed"
                         (onChange)="toggleTodo(todo.id)"></p-checkbox>
 
-                    <div class="flex flex-column">
-                        <span [class.line-through]="todo.completed" class="text-xl font-bold text-900">
+                    <div class="flex flex-column w-full">
+                        <span *ngIf="!todo.editing" [class.line-through]="todo.completed"
+                            class="text-xl font-bold text-900 cursor-pointer" (click)="todo.editing = true">
                             {{ todo.title }}
                         </span>
+
+                        <div *ngIf="todo.editing" class="flex gap-2">
+                            <input pInputText [(ngModel)]="todo.title" class="p-inputtext-sm flex-1">
+                            <button pButton icon="pi pi-check" class="p-button-text p-button-success"
+                                (click)="saveTodo(todo)"></button>
+                        </div>
                         <p class="text-600 m-0 mt-1 text-sm">{{ todo.description }}</p>
                     </div>
                 </div>
-
                 <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
                     (click)="deleteTodo(todo.id)" pTooltip="Delete Task"></button>
             </div>
-
             <div class="subtask-container ml-5 border-left-2 border-gray-100 pl-3">
                 <h4 class="text-xs font-semibold text-500 uppercase tracking-wider mb-2">Subtasks</h4>
-
                 <div *ngFor="let st of todo.subtasks" class="flex justify-content-between align-items-center mb-2">
-                    <div class="flex align-items-center gap-2">
+                    <div class="flex align-items-center gap-2 w-full">
                         <p-checkbox [binary]="true" [(ngModel)]="st.completed"
                             (onChange)="toggleSubtask(todo.id, st.id)"></p-checkbox>
-                        <span [class.line-through]="st.completed" class="text-sm">{{ st.title }}</span>
+                        <span *ngIf="!st.editing" [class.line-through]="st.completed" class="text-sm cursor-pointer"
+                            (click)="st.editing = true">
+                            {{ st.title }}
+                        </span>
+                        <input *ngIf="st.editing" pInputText [(ngModel)]="st.title" class="p-inputtext-sm flex-1"
+                            (keyup.enter)="saveSubtask(todo.id, st)">
                     </div>
-
                     <button pButton icon="pi pi-times"
                         class="p-button-rounded p-button-text p-button-danger p-button-sm"
                         (click)="deleteSubtask(todo.id, st.id)" pTooltip="Delete Subtask"></button>
                 </div>
-
                 <div class="flex gap-2 mt-3">
                     <input type="text" #subInput pInputText placeholder="New subtask..." class="p-inputtext-sm flex-1"
                         (keyup.enter)="addSubtask(todo.id, subInput.value); subInput.value='' " />
@@ -69,7 +73,6 @@
             </div>
         </div>
     </div>
-
     <ng-template #emptyState>
         <div class="text-center mt-8 py-8 border-2 border-dashed border-gray-300 border-round">
             <i class="pi pi-clipboard text-6xl text-300 mb-3"></i>
