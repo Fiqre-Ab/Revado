@@ -1,4 +1,4 @@
-# RevaDo – The Next-Gen Full-Stack Todo Platform
+# RevaDo – Full-Stack Todo Platform
 
 RevaDo is a modern full-stack task management application built with Spring Boot, SQLite, and Angular. It is designed to be secure, scalable, and container-ready while remaining lightweight enough to run locally or inside Docker. This project demonstrates real-world full-stack development, including RESTful APIs, JWT-based authentication, database persistence, frontend state management, and Docker containerization.
 
