@@ -1,39 +1,75 @@
-# RevaDo: The Next-Gen Todo Platform
+RevaDo – A Full-Stack Todo Platform
 
-Welcome to RevaDo, your productivity solution! Boasting a robust backend powered by Spring Boot and SQLite, seamlessly integrated with a dynamic Angular front end. Our mission: to deliver a scalable, cloud-ready experience for managing tasks.
+RevaDo is a full-stack task management application built with Spring Boot, SQLite, and Angular. It’s designed to be simple, secure, and scalable — while still being lightweight enough to run locally or inside Docker.
 
-## Core Features
+This project was built to demonstrate real-world full-stack development: backend APIs, authentication with JWT, database persistence, frontend state management, and containerization.
 
-- Spring Boot + SQLite backend for reliable, lightning-fast data management
-- Angular front end for a responsive, intuitive user interface
-- Containerization and cloud deployment (Jenkins pipeline) on the roadmap
+What It Does
 
-Join us as we redefine productivity with RevaDo, where innovation meets execution!
+RevaDo allows users to:
 
-## Application Features
+Register and log in securely
 
-### Core MVPs
+Create, edit, and delete todo items
 
-#### Users
-- authentication & authorization
+Mark todos as complete
 
-#### Todo items
-- adding Todo items and marking them complete
-- adding subtasks to Todo items and marking them complete
-- deleting Todo and subtask items
-- editing Todo and subtask items
+Add subtasks to each todo
 
-### Client-Side MVP
-- Use Angular to build the user client
+Edit, delete, and complete subtasks
 
-### Server-Side
-- Use Spring Boot to build the backend
+Each user manages their own set of tasks, and all routes are protected using JWT authentication.
 
-### Persistence
-- An SQLite database should be used for persistence
+How It’s Built
+Backend
 
-## Entities
+Java 21
 
-- Users
-- Todo items
-- Subtask items  
+Spring Boot 3
+
+Spring Security with JWT
+
+Spring Data JPA
+
+Hibernate
+
+SQLite for persistence
+
+The backend follows a layered architecture:
+Controller → Service → Repository → Database
+
+Frontend
+
+Angular
+
+TypeScript
+
+Reactive Forms
+
+HTTP Interceptors
+
+Route Guards
+
+The frontend communicates with the backend through REST APIs and attaches JWT tokens automatically using an interceptor.
+
+Database
+
+SQLite is used as a lightweight file-based database.
+Entity structure includes:
+
+User
+
+Todo
+
+Subtask
+
+A user can have multiple todos, and each todo can have multiple subtasks.
+
+Docker Support
+
+The backend is containerized with Docker and supports volume mounting for persistent database storage.
+
+docker build -t revado-backend .
+docker run --name revado-backend -p 8081:8080 -d -v ${PWD}/revado.db:/app/revado.db revado-backend
+Health check endpoint:
+http://localhost:8081/actuator/health
