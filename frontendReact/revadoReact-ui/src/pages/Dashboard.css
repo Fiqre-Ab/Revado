@@ -1,0 +1,128 @@
+.dashboard-wrapper {
+    background: #f0f2f5;
+    min-height: 100vh;
+    font-family: sans-serif;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 10%;
+    background: #2c3e50;
+    color: white;
+}
+
+.main-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+.dashboard-header {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.input-section {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.input-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.title-input {
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.desc-input {
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.add-task-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    height: fit-content;
+}
+
+.todo-item {
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.todo-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.todo-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.todo-desc-text {
+    margin: 5px 0;
+    color: #7f8c8d;
+    font-size: 0.85rem;
+}
+
+.subtask-section {
+    margin-top: 15px;
+    padding-left: 30px;
+    border-left: 2px solid #ecf0f1;
+}
+
+.subtask-item {
+    display: flex;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.sub-done {
+    text-decoration: line-through;
+    color: #bdc3c7;
+}
+
+.subtask-input {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    outline: none;
+    padding: 5px 0;
+    font-size: 0.8rem;
+}
+
+.delete-btn {
+    margin-left: auto;
+    color: #e74c3c;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.is-done {
+    opacity: 0.6;
+}
